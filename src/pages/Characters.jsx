@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import { Container, Row, Col,
-ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText,
-Media,
+import {
+  Container, Row, Col,
+  Card,
 } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { getCharacters } from '../actions/charactersAction';
-import CharactersList from '../containers/CharactersList.jsx'
+import CharactersList from '../containers/CharactersList.jsx';
+import CharactersSearch from '../containers/CharactersSearch';
 
 
 const Characters = () => {
@@ -20,6 +21,7 @@ const Characters = () => {
     <Container>
       <Row>
         <Col sm="12" md={{ size: 8, offset: 2 }}>
+          <CharactersSearch />
           <CharactersList />
         </Col>
       </Row>

@@ -2,10 +2,11 @@
 const initialState = {
   characters: [],
   loading: false,
+  filteredCharacters: [],
 };
 
 export default (state = initialState, action) => {
-  const { characters, error } = action;
+  const { characters, error, filteredCharacters } = action;
   switch (action.type) {
     case 'CHARACTERS_REQUESTED':
       return {
@@ -17,12 +18,18 @@ export default (state = initialState, action) => {
         ...state,
         loading: false,
         characters,
+        filteredCharacters: characters,
       };
     case 'CHARACTERS_FAILED':
       return {
         ...state,
         loading: false,
         error,
+      };
+    case 'FILTERED_CHARACTERS':
+      return {
+        ...state,
+        filteredCharacters,
       };
     default:
       return state;
