@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col,
+ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText,
+Media,
+} from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { getCharacters } from '../actions/charactersAction';
+import CharactersList from '../containers/CharactersList.jsx'
 
 
 const Characters = () => {
@@ -15,8 +19,8 @@ const Characters = () => {
   return (
     <Container>
       <Row>
-        <Col sm={12}>
-      <h3>Personagens</h3>
+        <Col sm="12" md={{ size: 8, offset: 2 }}>
+          <CharactersList />
         </Col>
       </Row>
     </Container>
