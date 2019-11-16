@@ -1,12 +1,25 @@
-import React, { Fragment } from "react";
+import React, { useEffect } from "react";
+import { Container, Row, Col } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { simpleAction } from '../actions/charactersAction';
+import { getCharacters } from '../actions/charactersAction';
+
 
 const Characters = () => {
+  const dispatch = useDispatch();
+  const { characters, loading } = useSelector(state => state.characters);
+
+  useEffect(() => {
+    dispatch(getCharacters());
+  }, []);
+
   return (
-    <>
-      <h3>SALVEEE</h3>
-    </>
+    <Container>
+      <Row>
+        <Col sm={12}>
+      <h3>Personagens</h3>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

@@ -1,5 +1,5 @@
-import React, { Fragment } from "react";
-import { Container, Row, Col, Button, FormGroup, Label, Input, FormText } from 'reactstrap';
+import React from "react";
+import { Container, Row, Col } from 'reactstrap';
 // import { useSelector, useDispatch } from 'react-redux';
 // import { simpleAction } from '../actions/charactersAction';
 import styled from 'styled-components';
