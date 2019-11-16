@@ -6,48 +6,50 @@ import { filterCharacters } from '../actions/charactersAction';
 
 const CharactersSearch = () => {
   const dispatch = useDispatch();
-  const { characters, loading } = useSelector((state) => state.characters);
+  const { characters, filteredCharacters } = useSelector((state) => state.characters);
 
   const formik = useFormik({
     initialValues: {
       search: '',
       filter: '',
+      species: '',
     },
     onSubmit: values => {
       // alert(JSON.stringify(values, null, 2));
     },
   });
   const { values, setFieldValue } = formik;
-  console.log("filterva", values.filter.toLowerCase())
+
   const filterList = (value) => {
     setFieldValue('search', value);
+    if (values.filter) {
+      const filtered = characters.filter((character) => {
+        if (character.gender.toLowerCase() === values.filter.toLowerCase()) {
+          return character.name
+          && character.name.toLowerCase().indexOf(value.toLowerCase()) !== -1
+        }
+      });
+      dispatch(filterCharacters(filtered));
+      return;
+    };
     const filtered = characters.filter((character) => {
-      // if(character.name
-      //   && character.name.toLowerCase().indexOf(value.toLowerCase()) !== -1 ){
-        //     return character;
-        //   };
-        console.log('char', character.gender.toLowerCase())
-        console.log("val", values.filter.toLowerCase())
-        console.log("==>", character.gender.toLowerCase() === values.filter.toLowerCase())
-
-      if(character.gender.toLowerCase() === values.filter.toLowerCase()){
-        console.log("FUNCTION")
-        return character;
-      };
+      return character.name
+      && character.name.toLowerCase().indexOf(value.toLowerCase()) !== -1
     });
     dispatch(filterCharacters(filtered));
   };
 
-  const filterByGender = gender => {
-    console.log("GENDER", gender)
-    setFieldValue('filter', gender);
-    const filtered = characters.filter((character) => {
-      if(character.gender.toLowerCase() === gender.toLowerCase()){
-        console.log("FUNCTION")
-        return character;
-      };
-    });
-    dispatch(filterCharacters(filtered));
+  const filterByGender = (gender) => {
+    if (values.filter === gender) {
+      setFieldValue('filter', '');
+      filterList(values.search);
+    } else {
+      setFieldValue('filter', gender);
+      const filtered = characters.filter((character) => {
+        return character.gender.toLowerCase() === gender.toLowerCase()
+      });
+      dispatch(filterCharacters(filtered));
+    }
   };
 
   return (
@@ -74,7 +76,7 @@ const CharactersSearch = () => {
             type="select"
             name="filter"
             id="filter"
-            onChange={( { target : { value } }) => {
+            onChange={({ target : { value } }) => {
               setFieldValue('filter', value);
             }}
             value={values.filter}
@@ -88,7 +90,10 @@ const CharactersSearch = () => {
         <Col sm={2}>
           <FormGroup style={{marginLeft:20}}>
             <Label check>
-              <Input type="checkbox" checked={!!(values.filter === 'female')}  onChange={() => filterByGender('female')} />{' '}
+              <Input
+                type="checkbox"
+                checked={!!(values.filter === 'female')}
+                onChange={() => filterByGender('female')} />{' '}
               Female
             </Label>
           </FormGroup>
@@ -112,7 +117,7 @@ const CharactersSearch = () => {
         <Col sm={2}>
           <FormGroup>
             <Label check>
-              <Input type="checkbox" checked={!!(values.filter === 'unknown')} onChange={() => filterByGender('unknow')} />{' '}
+              <Input type="checkbox" checked={!!(values.filter === 'unknown')} onChange={() => filterByGender('unknown')} />{' '}
               unknown
             </Label>
           </FormGroup>
