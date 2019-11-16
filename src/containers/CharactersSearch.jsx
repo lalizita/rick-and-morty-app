@@ -1,5 +1,8 @@
 import React from 'react';
-import { Col, Row, Card, FormGroup, Label, Input } from 'reactstrap';
+import {
+  Col, Row, Card,
+  FormGroup, Label, Input,
+} from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { filterCharacters } from '../actions/charactersAction';
@@ -48,36 +51,54 @@ const CharactersSearch = () => {
     }
     filtered = characters.filter((character) => character.name
       && character.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
-
     dispatch(filterCharacters(filtered));
   };
 
   const filterByGender = (gender) => {
+    let filtered;
     if (values.filter === gender) {
       setFieldValue('filter', '');
       filterList(values.search);
     } else {
       setFieldValue('filter', gender);
-      const filtered = characters.filter((character) => {
-        return character.gender.toLowerCase() === gender.toLowerCase()
-      });
+      if (values.species !== 'none') {
+        filtered = characters.filter((character) => {
+          return character.gender.toLowerCase() === gender.toLowerCase()
+          && character.species.toLowerCase().indexOf(values.species.toLowerCase()) !== -1
+        });
+      } else {
+        filtered = characters.filter((character) => {
+          return character.gender.toLowerCase() === gender.toLowerCase()
+        });
+      }
       dispatch(filterCharacters(filtered));
     }
   };
 
   const filterBySpecies = (value) => {
     setFieldValue('species', value);
-    const filtered = characters.filter((character) => {
-      if (!values.filter) {
-        return character.species
-        && character.species.toLowerCase().indexOf(value.toLowerCase()) !== -1
-      }
-      if (character.species
-        && character.species.toLowerCase().indexOf(value.toLowerCase()) !== -1
-        && character.gender.toLowerCase() === values.filter.toLowerCase()) {
-        return character;
-      }
-    });
+    let filtered;
+    if (value === 'none' && !values.filter) {
+      filtered = characters;
+    }
+    if (value === 'none' && values.filter) {
+      filtered = characters.filter((character) => {
+        return character.gender.toLowerCase().indexOf(values.filter.toLowerCase()) !== -1
+        || character.name.toLowerCase() === values.search.toLowerCase()
+      });
+    } else {
+      filtered = characters.filter((character) => {
+        if (!values.filter) {
+          return character.species
+          && character.species.toLowerCase().indexOf(value.toLowerCase()) !== -1
+        }
+        if (character.species
+          && character.species.toLowerCase().indexOf(value.toLowerCase()) !== -1
+          && character.gender.toLowerCase() === values.filter.toLowerCase()) {
+          return character;
+        }
+      });
+    }
     dispatch(filterCharacters(filtered));
   };
 
@@ -89,7 +110,7 @@ const CharactersSearch = () => {
             <Label for="search">Search Character</Label>
             <Input
               type="text"
-              onChange={({ target : { value } }) => {
+              onChange={({ target: { value } }) => {
                 filterList(value);
               }}
               name="search"
@@ -105,7 +126,7 @@ const CharactersSearch = () => {
             type="select"
             name="filter"
             id="filter"
-            onChange={({ target : { value } }) => {
+            onChange={({ target: { value } }) => {
               filterBySpecies(value);
             }}
             value={values.species}
@@ -118,7 +139,7 @@ const CharactersSearch = () => {
       </Row>
       <Row>
         <Col sm={2}>
-          <FormGroup style={{marginLeft:20}}>
+          <FormGroup style={{ marginLeft: 20 }}>
             <Label check>
               <Input
                 type="checkbox"
