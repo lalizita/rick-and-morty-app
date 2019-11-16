@@ -1,41 +1,54 @@
-import React, { useState } from 'react';
-import { Col, Row, Card, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import React from 'react';
+import { Col, Row, Card, FormGroup, Label, Input } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { filterCharacters } from '../actions/charactersAction';
 
 const CharactersSearch = () => {
   const dispatch = useDispatch();
-  const { characters, filteredCharacters } = useSelector((state) => state.characters);
+  const { characters } = useSelector((state) => state.characters);
 
   const formik = useFormik({
     initialValues: {
       search: '',
       filter: '',
-      species: '',
-    },
-    onSubmit: values => {
-      // alert(JSON.stringify(values, null, 2));
+      species: 'none',
     },
   });
   const { values, setFieldValue } = formik;
 
   const filterList = (value) => {
     setFieldValue('search', value);
+    let filtered;
     if (values.filter) {
-      const filtered = characters.filter((character) => {
+      filtered = characters.filter((character) => {
         if (character.gender.toLowerCase() === values.filter.toLowerCase()) {
           return character.name
           && character.name.toLowerCase().indexOf(value.toLowerCase()) !== -1
         }
       });
-      dispatch(filterCharacters(filtered));
-      return;
-    };
-    const filtered = characters.filter((character) => {
-      return character.name
-      && character.name.toLowerCase().indexOf(value.toLowerCase()) !== -1
-    });
+    }
+    if (values.species !== 'none') {
+      filtered = characters.filter((character) => {
+        if (character.species
+          && character.species.toLowerCase().indexOf(value.toLowerCase()) !== -1
+          && character.name.toLowerCase().indexOf(value.toLowerCase()) !== -1) {
+          return character;
+        }
+      });
+    }
+    if (values.species !== 'none' && values.filter) {
+      filtered = characters.filter((character) => {
+        if ( character.gender.toLowerCase() === values.filter.toLowerCase()
+        && character.species.toLowerCase().indexOf(value.toLowerCase()) !== -1
+        && character.name.toLowerCase().indexOf(value.toLowerCase()) !== -1) {
+          return character;
+        }
+      });
+    }
+    filtered = characters.filter((character) => character.name
+      && character.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+
     dispatch(filterCharacters(filtered));
   };
 
@@ -50,6 +63,22 @@ const CharactersSearch = () => {
       });
       dispatch(filterCharacters(filtered));
     }
+  };
+
+  const filterBySpecies = (value) => {
+    setFieldValue('species', value);
+    const filtered = characters.filter((character) => {
+      if (!values.filter) {
+        return character.species
+        && character.species.toLowerCase().indexOf(value.toLowerCase()) !== -1
+      }
+      if (character.species
+        && character.species.toLowerCase().indexOf(value.toLowerCase()) !== -1
+        && character.gender.toLowerCase() === values.filter.toLowerCase()) {
+        return character;
+      }
+    });
+    dispatch(filterCharacters(filtered));
   };
 
   return (
@@ -77,12 +106,13 @@ const CharactersSearch = () => {
             name="filter"
             id="filter"
             onChange={({ target : { value } }) => {
-              setFieldValue('filter', value);
+              filterBySpecies(value);
             }}
-            value={values.filter}
+            value={values.species}
           >
-            <option>name</option>
-            <option>species</option>
+            <option>none</option>
+            <option>Human</option>
+            <option>Alien</option>
           </Input>
         </Col>
       </Row>
