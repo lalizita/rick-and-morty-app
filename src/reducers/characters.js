@@ -1,16 +1,37 @@
 
 const initialState = {
-  characters: ['rick', 'morty']
-}
+  characters: [],
+  loading: false,
+  filteredCharacters: [],
+};
+
 export default (state = initialState, action) => {
-  console.log({action})
+  const { characters, error, filteredCharacters } = action;
   switch (action.type) {
-   case 'SIMPLE_ACTION':
-    return {
-      ...state,
-     result: action.payload
-    }
-   default:
-    return state;
+    case 'CHARACTERS_REQUESTED':
+      return {
+        ...state,
+        loading: true,
+      };
+    case 'CHARACTERS_RECEIVED':
+      return {
+        ...state,
+        loading: false,
+        characters,
+        filteredCharacters: characters,
+      };
+    case 'CHARACTERS_FAILED':
+      return {
+        ...state,
+        loading: false,
+        error,
+      };
+    case 'FILTERED_CHARACTERS':
+      return {
+        ...state,
+        filteredCharacters,
+      };
+    default:
+      return state;
   }
-}
+};
