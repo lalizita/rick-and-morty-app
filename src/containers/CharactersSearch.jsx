@@ -23,19 +23,10 @@ const CharactersSearch = () => {
   const filterList = (value) => {
     setFieldValue('search', value);
     let filtered;
-    if (values.filter) {
+    if (!values.filter && values.species !== 'none') {
       filtered = characters.filter((character) => {
-        if (character.gender.toLowerCase() === values.filter.toLowerCase()) {
-          return character.name
-          && character.name.toLowerCase().indexOf(value.toLowerCase()) !== -1
-        }
-      });
-    }
-    if (values.species !== 'none') {
-      filtered = characters.filter((character) => {
-        if (character.species
-          && character.species.toLowerCase().indexOf(value.toLowerCase()) !== -1
-          && character.name.toLowerCase().indexOf(value.toLowerCase()) !== -1) {
+        if (character.species.toLowerCase().indexOf(values.species.toLowerCase()) !== -1
+        && character.name.toLowerCase().indexOf(value.toLowerCase()) !== -1) {
           return character;
         }
       });
@@ -43,14 +34,23 @@ const CharactersSearch = () => {
     if (values.species !== 'none' && values.filter) {
       filtered = characters.filter((character) => {
         if ( character.gender.toLowerCase() === values.filter.toLowerCase()
-        && character.species.toLowerCase().indexOf(value.toLowerCase()) !== -1
+        && character.species.toLowerCase().indexOf(values.species.toLowerCase()) !== -1
         && character.name.toLowerCase().indexOf(value.toLowerCase()) !== -1) {
           return character;
         }
       });
     }
-    filtered = characters.filter((character) => character.name
-      && character.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+    if (values.species === 'none' && values.filter) {
+      filtered = characters.filter((character) => {
+        if (character.gender.toLowerCase() === values.filter.toLowerCase()
+        && character.name.toLowerCase().indexOf(value.toLowerCase()) !== -1) {
+          return character;
+        }
+      });
+    } else {
+      filtered = characters.filter((character) => character.name
+        && character.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+    }
     dispatch(filterCharacters(filtered));
   };
 
@@ -59,16 +59,25 @@ const CharactersSearch = () => {
     if (values.filter === gender) {
       setFieldValue('filter', '');
       filterList(values.search);
+      filtered = characters.filter((character) => character.name
+        && character.name.toLowerCase().indexOf(values.search.toLowerCase()) !== -1);
     } else {
       setFieldValue('filter', gender);
-      if (values.species !== 'none') {
+      if (values.species !== 'none' && values.search) {
+        filtered = characters.filter((character) => {
+          return character.gender.toLowerCase() === gender.toLowerCase()
+          && character.species.toLowerCase().indexOf(values.species.toLowerCase()) !== -1
+          && character.name.toLowerCase().indexOf(values.search.toLowerCase()) !== -1
+        });
+      }
+      if (values.species !== 'none' && !values.search) {
         filtered = characters.filter((character) => {
           return character.gender.toLowerCase() === gender.toLowerCase()
           && character.species.toLowerCase().indexOf(values.species.toLowerCase()) !== -1
         });
       } else {
         filtered = characters.filter((character) => {
-          return character.gender.toLowerCase() === gender.toLowerCase()
+          return character.gender.toLowerCase() === gender.toLowerCase();
         });
       }
       dispatch(filterCharacters(filtered));
@@ -80,11 +89,10 @@ const CharactersSearch = () => {
     let filtered;
     if (value === 'none' && !values.filter) {
       filtered = characters;
-    }
-    if (value === 'none' && values.filter) {
+    } else if (value === 'none' && values.filter) {
       filtered = characters.filter((character) => {
         return character.gender.toLowerCase().indexOf(values.filter.toLowerCase()) !== -1
-        || character.name.toLowerCase() === values.search.toLowerCase()
+        || character.name.toLowerCase() === values.search.toLowerCase();
       });
     } else {
       filtered = characters.filter((character) => {

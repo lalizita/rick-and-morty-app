@@ -1,7 +1,5 @@
-import React from "react";
-import { Container, Row, Col } from 'reactstrap';
-// import { useSelector, useDispatch } from 'react-redux';
-// import { simpleAction } from '../actions/charactersAction';
+import React from 'react';
+import { Container, Row, Col, Badge } from 'reactstrap';
 import styled from 'styled-components';
 import rickAndMortyImage from '../images/rickAndMorty.png';
 import { Link } from "react-router-dom";
@@ -51,22 +49,28 @@ const MenuItem = styled(Link)`
     width:100%;
     margin:20px 0px;
   }
+  ${({ disabled }) => disabled && `
+    color:#ccc;
+  `}
 `;
 
 const Home = () => {
-  // const dispatch = useDispatch();
-  // const characters = useSelector(state => state.characters);
-  // const handleAction = () => dispatch(simpleAction());
   return (
     <HomeContainer>
       <Row>
-        <Col sm="12" md={{ size: 6, offset: 3 }}>
+        <Col sm="12" md={{ size: 8, offset: 2 }}>
           <ImageElement src={rickAndMortyImage} alt="imagem do Rick And Morty" />
-          <Title>Bem vindo ao App do Rick and Morty App!</Title>
+          <Title>Welcome to Rick and Morty App!</Title>
           <Menu>
-            <MenuItem to="/characters">Personagens</MenuItem>
-            <MenuItem to="/locations">Locais</MenuItem>
-            <MenuItem to="/episodes">Episódios</MenuItem>
+            <MenuItem to="/characters">Characters</MenuItem>
+            <MenuItem disabled>
+                Locations
+              <Badge color="success" pill>comming soon</Badge>
+            </MenuItem>
+            <MenuItem disabled>
+                Episodes
+              <Badge color="success" pill>coming soon.</Badge>
+            </MenuItem>
           </Menu>
         </Col>
       </Row>

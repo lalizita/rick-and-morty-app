@@ -1,17 +1,15 @@
 import React, { useEffect } from "react";
 import {
   Container, Row, Col,
-  Card,
 } from 'reactstrap';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getCharacters } from '../actions/charactersAction';
-import CharactersList from '../containers/CharactersList.jsx';
+import CharactersList from '../containers/CharactersList';
 import CharactersSearch from '../containers/CharactersSearch';
 
 
 const Characters = () => {
   const dispatch = useDispatch();
-  const { characters, loading } = useSelector(state => state.characters);
 
   useEffect(() => {
     dispatch(getCharacters());
