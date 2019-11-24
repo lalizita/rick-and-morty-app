@@ -7,7 +7,7 @@ import {
 } from 'reactstrap';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { getCharacters } from '../store/ducks/characters';
+import { getLocations } from '../store/ducks/locations';
 
 const Label = styled.span`
   font-weight:600;
@@ -54,9 +54,10 @@ const compareDecresc = (a, b) => {
   return 0;
 };
 
-const CharactersList = () => {
+const LocationsList = () => {
   const dispatch = useDispatch();
-  const { filteredCharacters, loading } = useSelector((state) => state.characters);
+  const { filteredLocations, loading } = useSelector((state) => state.locations);
+  console.log("filteredLocations", filteredLocations)
   const [currentPage, setCurrentPage] = useState(1);
   const [currentItems, setCurrentItems] = useState([]);
   const [pagesNumber, setPagesNumber] = useState([]);
@@ -65,20 +66,20 @@ const CharactersList = () => {
   const indexOfFirst = indexOfLast - itemsPerPage;
 
   useEffect(() => {
-    dispatch(getCharacters());
+    dispatch(getLocations());
   }, []);
 
   useEffect(() => {
-    const filterItensPerPage = filteredCharacters.slice(indexOfFirst, indexOfLast);
+    const filterItensPerPage = filteredLocations.slice(indexOfFirst, indexOfLast);
     const pages = [];
-    if (filteredCharacters.length > 0) setCurrentItems(filterItensPerPage);
-    for (let index = 1; index <= Math.ceil(filteredCharacters.length / itemsPerPage); index++) {
+    if (filteredLocations.length > 0) setCurrentItems(filterItensPerPage);
+    for (let index = 1; index <= Math.ceil(filteredLocations.length / itemsPerPage); index++) {
       pages.push(index);
     }
     setPagesNumber(pages);
     if (currentPage > pages.length) setCurrentPage(1);
-    if(filteredCharacters.length === 0) setCurrentItems([]);
-  }, [filteredCharacters, currentPage]);
+    if(filteredLocations.length === 0) setCurrentItems([]);
+  }, [filteredLocations, currentPage]);
 
   const sortCresc = (list, order) => {
     const orderedList = order === 'cresc' ? list.sort(compareCresc) : list.sort(compareDecresc);
@@ -87,9 +88,9 @@ const CharactersList = () => {
 
   const handleClick = number => {
     setCurrentPage(number);
-    setCurrentItems(filteredCharacters.slice(indexOfFirst, indexOfLast));
+    setCurrentItems(filteredLocations.slice(indexOfFirst, indexOfLast));
   };
-  
+
   return (
     <>
       <ListHeader>
@@ -113,36 +114,27 @@ const CharactersList = () => {
             <Spinner type="grow" color="success" />
           </SpinnerContainer>
         )}
-        {currentItems.length > 0 && currentItems.map((character) => (
-          <ListGroupItem key={character.id}>
-            <Media>
-              <Media left top>
-                <CharacterImage object src={character.image} alt={`${character.name}'s photo`} />
+        {currentItems.length > 0 && currentItems.map((location) => (
+          <ListGroupItem key={location.id}>
+            <Media body>
+              <Media heading>
+                { location.name }
               </Media>
-              <Media body>
-                <Media heading>
-                  { character.name }
-                </Media>
-                <ListGroupItemText>
-                  <div>
-                    <Label>Specie:</Label>
-                    { character.species }
-                  </div>
-                  <div>
-                    <Label>Gender:</Label>
-                    { character.gender }
-                  </div>
-                  <div>
-                    <Label>Status:</Label>
-                    { character.status }
-                  </div>
-                </ListGroupItemText>
-              </Media>
+              <ListGroupItemText>
+                <div>
+                  <Label>Type:</Label>
+                  { location.dimension }
+                </div>
+                <div>
+                  <Label>Type:</Label>
+                  { location.planet }
+                </div>
+              </ListGroupItemText>
             </Media>
           </ListGroupItem>
         ))}
       </ListGroup>
-      {filteredCharacters.length === 0 && (
+      {filteredLocations.length === 0 && (
         <ListGroup>
           <ListGroupItem>
             <h1>Ops, no results...</h1>
@@ -166,4 +158,4 @@ const CharactersList = () => {
   );
 };
 
-export default CharactersList;
+export default LocationsList;

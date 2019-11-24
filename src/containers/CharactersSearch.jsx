@@ -5,7 +5,7 @@ import {
 } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
-import { filterCharacters } from '../actions/charactersAction';
+import { filterCharacters } from '../store/ducks/characters';
 
 const CharactersSearch = () => {
   const dispatch = useDispatch();

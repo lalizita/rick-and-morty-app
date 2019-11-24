@@ -3,27 +3,25 @@ import {
   Container, Row, Col,
 } from 'reactstrap';
 import { useDispatch } from 'react-redux';
-import { getCharacters } from '../store/ducks/characters';
-import CharactersList from '../containers/CharactersList';
-import CharactersSearch from '../containers/CharactersSearch';
+import { getLocations } from '../store/ducks/locations';
+import LocationsList from '../containers/LocationsList';
+// import CharactersSearch from '../containers/CharactersSearch';
 
-
-const Characters = () => {
+const Locations = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getCharacters());
+    dispatch(getLocations());
   }, []);
 
   return (
     <Container>
       <Row>
         <Col sm="12" md={{ size: 8, offset: 2 }}>
-          <CharactersSearch />
-          <CharactersList />
+          <LocationsList />
         </Col>
       </Row>
     </Container>
   );
 };
 
-export default Characters;
+export default Locations;

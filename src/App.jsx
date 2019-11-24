@@ -10,6 +10,7 @@ import { createStore, applyMiddleware } from 'redux';
 import configureStore from './store/store';
 import Home from './pages/Home.jsx';
 import Characters from './pages/Characters.jsx';
+import Locations from './pages/Locations.jsx';
 
 
 const store = createStore(configureStore, applyMiddleware(thunk))
@@ -25,6 +26,9 @@ function App(props) {
             </Route>
             <Route path="/characters">
               <Characters />
+            </Route>
+            <Route exact path="/locations">
+              <Locations />
             </Route>
           </Switch>
       </Provider>

@@ -63,9 +63,8 @@ const Home = () => {
           <Title>Welcome to Rick and Morty App!</Title>
           <Menu>
             <MenuItem to="/characters">Characters</MenuItem>
-            <MenuItem disabled>
+            <MenuItem to="/locations">
                 Locations
-              <Badge color="success" pill>comming soon</Badge>
             </MenuItem>
             <MenuItem disabled>
                 Episodes
