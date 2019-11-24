@@ -142,7 +142,7 @@ const EpisodesList = () => {
       <PaginationContainer>
         <Pagination>
           {pagesNumber.map((number) => (
-            <PaginationItem active={currentPage === number}>
+            <PaginationItem key={number} active={currentPage === number}>
               <PaginationLink onClick={() => handleClick(number)}>
                   {number}
               </PaginationLink>

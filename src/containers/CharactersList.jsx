@@ -156,12 +156,12 @@ const CharactersList = () => {
       <PaginationContainer>
         <Pagination>
           {pagesNumber.map((number) => (
-              <PaginationItem active={currentPage === number}>
-                <PaginationLink onClick={() => handleClick(number)}>
-                  {number}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
+            <PaginationItem key={number} active={currentPage === number}>
+              <PaginationLink onClick={() => handleClick(number)}>
+                {number}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
         </Pagination>
       </PaginationContainer>
     </>

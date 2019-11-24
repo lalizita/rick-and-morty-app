@@ -210,7 +210,7 @@ const LocationsList = () => {
         <Pagination>
           {pagesNumber.map((number) => {
             return (
-              <PaginationItem active={currentPage === number}>
+              <PaginationItem key={number} active={currentPage === number}>
                 <PaginationLink onClick={() => handleClick(number)}>
                   {number}
                 </PaginationLink>
