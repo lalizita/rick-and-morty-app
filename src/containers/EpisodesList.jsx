@@ -13,11 +13,6 @@ const Label = styled.span`
   font-weight:600;
 `;
 
-const CharacterImage = styled.img`
-  width:90px;
-  margin-right:10px;
-`;
-
 const SpinnerContainer = styled.div`
   text-align:center;
   width:100%;

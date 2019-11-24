@@ -17,7 +17,7 @@ const initialState = {
   filteredEpisodes: [],
 };
 
-export default function reducer(state = initialState, action={}) {
+export default function reducer(state = initialState, action = {}) {
   const { episodes, error, filteredEpisodes } = action;
   switch (action.type) {
     case Types.EPISODES_REQUESTED:

@@ -17,7 +17,7 @@ const initialState = {
   filteredLocations: [],
 };
 
-export default function reducer(state = initialState, action={}) {
+export default function reducer(state = initialState, action = {}) {
   const { locations, error, filteredLocations } = action;
   switch (action.type) {
     case Types.LOCATIONS_REQUESTED:

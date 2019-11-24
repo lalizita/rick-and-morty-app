@@ -89,7 +89,7 @@ const CharactersList = () => {
     setCurrentPage(number);
     setCurrentItems(filteredCharacters.slice(indexOfFirst, indexOfLast));
   };
-  
+
   return (
     <>
       <ListHeader>

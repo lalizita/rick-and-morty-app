@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from 'react';
 import {
   Col, Row, Card,
   FormGroup, Label, Input,
@@ -7,6 +7,7 @@ import {
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
+import { Link } from 'react-router-dom';
 import { filterEpisodes, getEpisodes } from '../store/ducks/episodes';
 
 const ButtonContainer = styled.div`
@@ -21,40 +22,48 @@ const EpisodesSearch = () => {
     initialValues: {
       search: '',
     },
-    onSubmit: values => {
+    onSubmit: (values, { resetForm }) => {
       dispatch(filterEpisodes(values));
+      resetForm();
     },
   });
   const { values, setFieldValue, handleSubmit } = formik;
 
   return (
-    <Card body>
-      <Row form>
-        <Col sm={12} md={7}>
-          <FormGroup>
-            <Label for="search">Search Episode</Label>
-            <Input
-              type="text"
-              onChange={({ target: { value } }) => {
-                setFieldValue('search', value);
-              }}
-              name="search"
-              id="search"
-              placeholder="Search a location"
-              value={values.search}
-            />
-          </FormGroup>
-        </Col>
+    <>
+      <Row>
         <Col>
-          <ButtonContainer>
-            <Button color="primary" onClick={handleSubmit}>Search</Button>
-          </ButtonContainer>
-          <ButtonContainer>
-            <Button outline color="primary" onClick={() => dispatch(getEpisodes())}>Clear</Button>
-          </ButtonContainer>
+          <Link to="/">Home</Link>
         </Col>
       </Row>
-    </Card>
+      <Card body>
+        <Row form>
+          <Col sm={12} md={7}>
+            <FormGroup>
+              <Label for="search">Search Episode</Label>
+              <Input
+                type="text"
+                onChange={({ target: { value } }) => {
+                  setFieldValue('search', value);
+                }}
+                name="search"
+                id="search"
+                placeholder="Search a location"
+                value={values.search}
+              />
+            </FormGroup>
+          </Col>
+          <Col>
+            <ButtonContainer>
+              <Button color="primary" onClick={handleSubmit}>Search</Button>
+            </ButtonContainer>
+            <ButtonContainer>
+              <Button outline color="primary" onClick={() => dispatch(getEpisodes())}>Clear</Button>
+            </ButtonContainer>
+          </Col>
+        </Row>
+      </Card>
+    </>
   );
 };
 

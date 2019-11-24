@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import {
   Container, Row, Col,
 } from 'reactstrap';
@@ -9,6 +9,7 @@ import LocationsSearch from '../containers/LocationsSearch';
 
 const Locations = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getLocations());
   }, []);

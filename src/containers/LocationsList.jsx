@@ -9,7 +9,7 @@ import {
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { getLocations } from '../store/ducks/locations';
-import { filterCharactersB } from '../store/ducks/characters';
+import { getMultipleCharacters } from '../store/ducks/characters';
 
 const Label = styled.span`
   font-weight:600;
@@ -142,7 +142,7 @@ const LocationsList = () => {
       acc.push(number[0]);
       return acc;
     }, []);
-    dispatch(filterCharactersB(charactersToSend));
+    dispatch(getMultipleCharacters(charactersToSend));
     setCharactersModal(true);
   };
 

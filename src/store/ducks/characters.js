@@ -17,7 +17,7 @@ const initialState = {
   filteredCharacters: [],
 };
 
-export default function reducer(state = initialState, action={}) {
+export default function reducer(state = initialState, action = {}) {
   const { characters, error, filteredCharacters } = action;
   switch (action.type) {
     case Types.CHARACTERS_REQUESTED:
@@ -49,6 +49,7 @@ export default function reducer(state = initialState, action={}) {
 }
 
 //Action Creators
+
 export const getCharacters = () => {
   return async (dispatch) => {
     dispatch({ type: Types.CHARACTERS_REQUESTED });
@@ -67,12 +68,31 @@ export const getCharacters = () => {
   };
 };
 
-export const filterCharacters = (values) => (dispatch) => dispatch({
-  type: Types.FILTERED_CHARACTERS,
-  filteredCharacters: values,
-});
+export const filterCharacters = ({ search, filter }) => {
+  const filterLiterals = {
+    name: `?name=${search.toLowerCase()}`,
+    species: `?species=${search.toLowerCase()}`,
+    gender: `?gender=${search.toLowerCase()}`,
+  };
 
-export const filterCharactersB = characters => {
+  return async (dispatch) => {
+    dispatch({ type: Types.CHARACTERS_REQUESTED });
+    try {
+      const { data } = await axios.get(`https://rickandmortyapi.com/api/character${filterLiterals[filter]}`);
+      dispatch({
+        type: Types.CHARACTERS_RECEIVED,
+        characters: data.results,
+      });
+    } catch (error) {
+      dispatch({
+        type: Types.CHARACTERS_FAILED,
+        error,
+      });
+    }
+  };
+}
+
+export const getMultipleCharacters = (characters) => {
   return async (dispatch) => {
     dispatch({ type: Types.CHARACTERS_REQUESTED });
     try {
