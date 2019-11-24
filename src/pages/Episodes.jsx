@@ -3,24 +3,24 @@ import {
   Container, Row, Col,
 } from 'reactstrap';
 import { useDispatch } from 'react-redux';
-import { getLocations } from '../store/ducks/locations';
-import LocationsList from '../containers/LocationsList';
+import { getEpisodes } from '../store/ducks/episodes';
+import EpisodesList from '../containers/EpisodesList';
 
-const Locations = () => {
+const Episodes = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getLocations());
+    dispatch(getEpisodes());
   }, []);
 
   return (
     <Container>
       <Row>
         <Col sm="12" md={{ size: 8, offset: 2 }}>
-          <LocationsList />
+          <EpisodesList />
         </Col>
       </Row>
     </Container>
   );
 };
 
-export default Locations;
+export default Episodes;

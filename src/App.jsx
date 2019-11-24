@@ -11,10 +11,9 @@ import configureStore from './store/store';
 import Home from './pages/Home.jsx';
 import Characters from './pages/Characters.jsx';
 import Locations from './pages/Locations.jsx';
-
+import Episodes from './pages/Episodes.jsx';
 
 const store = createStore(configureStore, applyMiddleware(thunk))
-console.log(store)
 
 function App(props) {
   return (
@@ -29,6 +28,9 @@ function App(props) {
             </Route>
             <Route exact path="/locations">
               <Locations />
+            </Route>
+            <Route exact path="/episodes">
+              <Episodes />
             </Route>
           </Switch>
       </Provider>

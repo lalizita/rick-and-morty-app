@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Badge } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 import styled from 'styled-components';
 import rickAndMortyImage from '../images/rickAndMorty.png';
 import { Link } from "react-router-dom";
@@ -66,9 +66,8 @@ const Home = () => {
             <MenuItem to="/locations">
                 Locations
             </MenuItem>
-            <MenuItem disabled>
+            <MenuItem to="/episodes">
                 Episodes
-              <Badge color="success" pill>coming soon.</Badge>
             </MenuItem>
           </Menu>
         </Col>
