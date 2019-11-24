@@ -105,7 +105,7 @@ const LocationsList = () => {
   const [currentItems, setCurrentItems] = useState([]);
   const [pagesNumber, setPagesNumber] = useState([]);
   const [charactersModal, setCharactersModal] = useState(false);
-  const itemsPerPage = 3;
+  const itemsPerPage = 5;
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
 
@@ -122,7 +122,7 @@ const LocationsList = () => {
     }
     setPagesNumber(pages);
     if (currentPage > pages.length) setCurrentPage(1);
-    if(filteredLocations.length === 0) setCurrentItems([]);
+    if (filteredLocations.length === 0) setCurrentItems([]);
   }, [filteredLocations, currentPage]);
 
   const sortCresc = (list, order) => {

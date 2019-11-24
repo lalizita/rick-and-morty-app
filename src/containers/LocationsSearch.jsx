@@ -4,10 +4,17 @@ import {
   FormGroup, Label, Input,
   Button,
 } from 'reactstrap';
+import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { Link } from 'react-router-dom';
-import { filterLocations } from '../store/ducks/locations';
+import { filterLocations, getLocations } from '../store/ducks/locations';
+
+const ButtonContainer = styled.div`
+  margin-top:30px;
+  margin-left:5px;
+  display:inline-block;
+`;
 
 const LocationsSearch = () => {
   const dispatch = useDispatch();
@@ -64,9 +71,12 @@ const LocationsSearch = () => {
           </Col>
         </Row>
         <Row>
-          <Col>
+          <ButtonContainer>
             <Button color="primary" onClick={handleSubmit}>Search</Button>
-          </Col>
+          </ButtonContainer>
+          <ButtonContainer>
+            <Button outline color="primary" onClick={() => dispatch(getLocations())}>Clear</Button>
+          </ButtonContainer>
         </Row>
       </Card>
     </>

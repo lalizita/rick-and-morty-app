@@ -60,7 +60,7 @@ const CharactersList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentItems, setCurrentItems] = useState([]);
   const [pagesNumber, setPagesNumber] = useState([]);
-  const itemsPerPage = 3;
+  const itemsPerPage = 5;
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
 
