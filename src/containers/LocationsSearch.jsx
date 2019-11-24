@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import {
   Col, Row, Card,
   FormGroup, Label, Input,
-  Button, FormText,
+  Button, FormFeedback,
 } from 'reactstrap';
 import * as Yup from 'yup';
 import styled from 'styled-components';
@@ -57,7 +57,7 @@ const LocationsSearch = () => {
                 value={values.search}
               />
               {errors && errors.search && (
-                <FormText> {errors.search} </FormText>
+                <FormFeedback> {errors.search} </FormFeedback>
               )}
             </FormGroup>
           </Col>
