@@ -10,7 +10,7 @@ import CharactersSearch from '../containers/CharactersSearch';
 
 const Characters = () => {
   const dispatch = useDispatch();
-
+  console.log("GETCHARACTERS", getCharacters)
   useEffect(() => {
     dispatch(getCharacters());
   }, []);
