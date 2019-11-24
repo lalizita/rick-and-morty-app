@@ -51,7 +51,7 @@ const compareDecresc = (a, b) => {
 
 const EpisodesList = () => {
   const dispatch = useDispatch();
-  const { filteredEpisodes, loading } = useSelector((state) => state.episodes);
+  const { episodes, loading } = useSelector((state) => state.episodes);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentItems, setCurrentItems] = useState([]);
   const [pagesNumber, setPagesNumber] = useState([]);
@@ -64,32 +64,36 @@ const EpisodesList = () => {
   }, []);
 
   useEffect(() => {
-    const filterItensPerPage = filteredEpisodes.slice(indexOfFirst, indexOfLast);
+    const filterItensPerPage = episodes.slice(indexOfFirst, indexOfLast);
     const pages = [];
-    if (filteredEpisodes.length > 0) setCurrentItems(filterItensPerPage);
-    for (let index = 1; index <= Math.ceil(filteredEpisodes.length / itemsPerPage); index++) {
+    if (episodes.length > 0) setCurrentItems(filterItensPerPage);
+    for (let index = 1; index <= Math.ceil(episodes.length / itemsPerPage); index++) {
       pages.push(index);
     }
     setPagesNumber(pages);
     if (currentPage > pages.length) setCurrentPage(1);
-    if(filteredEpisodes.length === 0) setCurrentItems([]);
-  }, [filteredEpisodes, currentPage]);
+    if (episodes.length === 0) setCurrentItems([]);
+  }, [episodes, currentPage]);
 
   const sortCresc = (list, order) => {
     const orderedList = order === 'cresc' ? list.sort(compareCresc) : list.sort(compareDecresc);
     setCurrentItems([...orderedList]);
   };
 
-  const handleClick = number => {
+  const handleClick = (number) => {
     setCurrentPage(number);
-    setCurrentItems(filteredEpisodes.slice(indexOfFirst, indexOfLast));
+    setCurrentItems(episodes.slice(indexOfFirst, indexOfLast));
   };
 
   return (
     <>
       <ListHeader>
         <Row>
-          <Col sm={6}>Resultados</Col>
+          <Col sm={6}>
+          Results (
+            {episodes.length}
+            )
+          </Col>
           <Col sm={6}>
             <ButtonsContainer>
               <Button outline color="success" style={{ marginRight: 10 }} onClick={() => sortCresc(currentItems, 'cresc')}>
@@ -128,7 +132,7 @@ const EpisodesList = () => {
           </ListGroupItem>
         ))}
       </ListGroup>
-      {filteredEpisodes.length === 0 && (
+      {episodes.length === 0 && (
         <ListGroup>
           <ListGroupItem>
             <h1>Ops, no results...</h1>
@@ -137,15 +141,13 @@ const EpisodesList = () => {
       )}
       <PaginationContainer>
         <Pagination>
-          {pagesNumber.map((number) => {
-            return (
-              <PaginationItem active={currentPage === number}>
-                <PaginationLink onClick={() => handleClick(number)}>
+          {pagesNumber.map((number) => (
+            <PaginationItem active={currentPage === number}>
+              <PaginationLink onClick={() => handleClick(number)}>
                   {number}
                 </PaginationLink>
-              </PaginationItem>
-            )
-          })}
+            </PaginationItem>
+          ))}
         </Pagination>
       </PaginationContainer>
     </>

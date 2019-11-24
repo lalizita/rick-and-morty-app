@@ -39,9 +39,10 @@ const PaginationContainer = styled.div`
   text-align:center;
 `;
 
-const SeeCharacters = styled.div`
+const SeeCharacters = styled.span`
   font-weight:700;
-
+  color:#82D00A;
+  cursor:pointer;
 `;
 
 const CharactersModal = ({ isOpen, onClose }) => {
@@ -100,7 +101,7 @@ const compareDecresc = (a, b) => {
 
 const LocationsList = () => {
   const dispatch = useDispatch();
-  const { filteredLocations, loading } = useSelector((state) => state.locations);
+  const { locations, loading } = useSelector((state) => state.locations);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentItems, setCurrentItems] = useState([]);
   const [pagesNumber, setPagesNumber] = useState([]);
@@ -114,16 +115,16 @@ const LocationsList = () => {
   }, []);
 
   useEffect(() => {
-    const filterItensPerPage = filteredLocations.slice(indexOfFirst, indexOfLast);
+    const filterItensPerPage = locations.slice(indexOfFirst, indexOfLast);
     const pages = [];
-    if (filteredLocations.length > 0) setCurrentItems(filterItensPerPage);
-    for (let index = 1; index <= Math.ceil(filteredLocations.length / itemsPerPage); index++) {
+    if (locations.length > 0) setCurrentItems(filterItensPerPage);
+    for (let index = 1; index <= Math.ceil(locations.length / itemsPerPage); index++) {
       pages.push(index);
     }
     setPagesNumber(pages);
     if (currentPage > pages.length) setCurrentPage(1);
-    if (filteredLocations.length === 0) setCurrentItems([]);
-  }, [filteredLocations, currentPage]);
+    if (locations.length === 0) setCurrentItems([]);
+  }, [locations, currentPage]);
 
   const sortCresc = (list, order) => {
     const orderedList = order === 'cresc' ? list.sort(compareCresc) : list.sort(compareDecresc);
@@ -132,7 +133,7 @@ const LocationsList = () => {
 
   const handleClick = number => {
     setCurrentPage(number);
-    setCurrentItems(filteredLocations.slice(indexOfFirst, indexOfLast));
+    setCurrentItems(locations.slice(indexOfFirst, indexOfLast));
   };
 
   const openModal = (residents) => {
@@ -150,7 +151,11 @@ const LocationsList = () => {
     <>
       <ListHeader>
         <Row>
-          <Col sm={6}>Resultados</Col>
+          <Col sm={6}>
+            Results (
+            {locations.length}
+            )
+          </Col>
           <Col sm={6}>
             <ButtonsContainer>
               <Button outline color="success" style={{ marginRight: 10 }} onClick={() => sortCresc(currentItems, 'cresc')}>
@@ -186,7 +191,7 @@ const LocationsList = () => {
                 </div>
                 <div>
                   <Label>Who lives here?:</Label>
-                  <SeeCharacters onClick={() => openModal(location.residents)}>See now</SeeCharacters>
+                  <SeeCharacters onClick={() => openModal(location.residents)}> See now</SeeCharacters>
                   <CharactersModal isOpen={charactersModal} onClose={() => setCharactersModal(false)} />
                 </div>
               </ListGroupItemText>
@@ -194,7 +199,7 @@ const LocationsList = () => {
           </ListGroupItem>
         ))}
       </ListGroup>
-      {filteredLocations.length === 0 && (
+      {locations.length === 0 && (
         <ListGroup>
           <ListGroupItem>
             <h1>Ops, no results...</h1>

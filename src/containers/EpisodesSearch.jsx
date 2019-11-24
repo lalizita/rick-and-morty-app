@@ -48,7 +48,7 @@ const EpisodesSearch = () => {
                 }}
                 name="search"
                 id="search"
-                placeholder="Search a location"
+                placeholder="Search a episode"
                 value={values.search}
               />
             </FormGroup>
