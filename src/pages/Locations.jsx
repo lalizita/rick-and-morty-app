@@ -5,6 +5,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { getLocations } from '../store/ducks/locations';
 import LocationsList from '../containers/LocationsList';
+import LocationsSearch from '../containers/LocationsSearch';
 
 const Locations = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const Locations = () => {
     <Container>
       <Row>
         <Col sm="12" md={{ size: 8, offset: 2 }}>
+          <LocationsSearch />
           <LocationsList />
         </Col>
       </Row>

@@ -67,3 +67,26 @@ export const getLocations = () => {
     }
   };
 };
+
+export const filterLocations = ({ filter, search }) => {
+  const searchFilter = {
+    name: `?name=${search.toLowerCase()}`,
+    dimension: `?dimension=${search.toLowerCase()}`,
+  };
+
+  return async (dispatch) => {
+    dispatch({ type: Types.LOCATIONS_REQUESTED });
+    try {
+      const { data } = await axios.get(`https://rickandmortyapi.com/api/location${searchFilter[filter]}`);
+      dispatch({
+        type: Types.LOCATIONS_RECEIVED,
+        locations: data.results,
+      });
+    } catch (error) {
+      dispatch({
+        type: Types.LOCATIONS_FAILED,
+        error,
+      });
+    }
+  };
+};
