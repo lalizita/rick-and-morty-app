@@ -67,3 +67,21 @@ export const getEpisodes = () => {
     }
   };
 };
+
+export const filterEpisodes = ({ search }) => {
+  return async (dispatch) => {
+    dispatch({ type: Types.EPISODES_REQUESTED });
+    try {
+      const { data } = await axios.get(`https://rickandmortyapi.com/api/episode?name=${search}`);
+      dispatch({
+        type: Types.EPISODES_RECEIVED,
+        episodes: data.results,
+      });
+    } catch (error) {
+      dispatch({
+        type: Types.EPISODES_FAILED,
+        error,
+      });
+    }
+  };
+};
