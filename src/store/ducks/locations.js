@@ -6,7 +6,6 @@ export const Types = {
   LOCATIONS_REQUESTED: 'LOCATIONS_REQUESTED',
   LOCATIONS_RECEIVED: 'LOCATIONS_RECEIVED',
   LOCATIONS_FAILED: 'LOCATIONS_FAILED',
-  FILTERED_LOCATIONS: 'FILTERED_LOCATIONS',
 };
 
 // Reducer
@@ -30,18 +29,13 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         loading: false,
         locations,
-        filteredLocations: locations,
       };
     case Types.LOCATIONS_FAILED:
       return {
         ...state,
         loading: false,
         error,
-      };
-    case Types.FILTERED_LOCATIONS:
-      return {
-        ...state,
-        filteredLocations,
+        locations: [],
       };
     default:
       return state;

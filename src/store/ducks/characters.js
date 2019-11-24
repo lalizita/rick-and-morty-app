@@ -6,7 +6,6 @@ export const Types = {
   CHARACTERS_REQUESTED: 'CHARACTERS_REQUESTED',
   CHARACTERS_RECEIVED: 'CHARACTERS_RECEIVED',
   CHARACTERS_FAILED: 'CHARACTERS_FAILED',
-  FILTERED_CHARACTERS: 'FILTERED_CHARACTERS',
 };
 
 //Reducer
@@ -30,18 +29,13 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         loading: false,
         characters,
-        filteredCharacters: characters,
       };
     case Types.CHARACTERS_FAILED:
       return {
         ...state,
         loading: false,
+        characters: [],
         error,
-      };
-    case Types.FILTERED_CHARACTERS:
-      return {
-        ...state,
-        filteredCharacters,
       };
     default:
       return state;

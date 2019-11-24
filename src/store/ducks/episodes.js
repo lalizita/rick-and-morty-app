@@ -6,7 +6,6 @@ export const Types = {
   EPISODES_REQUESTED: 'EPISODES_REQUESTED',
   EPISODES_RECEIVED: 'EPISODES_RECEIVED',
   EPISODES_FAILED: 'EPISODES_FAILED',
-  FILTERED_EPISODES: 'FILTERED_EPISODES',
 };
 
 // Reducer
@@ -30,18 +29,13 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         loading: false,
         episodes,
-        filteredEpisodes: episodes,
       };
     case Types.EPISODES_FAILED:
       return {
         ...state,
         loading: false,
         error,
-      };
-    case Types.FILTERED_EPISODES:
-      return {
-        ...state,
-        filteredEpisodes,
+        episodes: [],
       };
     default:
       return state;
@@ -72,7 +66,7 @@ export const filterEpisodes = ({ search }) => {
   return async (dispatch) => {
     dispatch({ type: Types.EPISODES_REQUESTED });
     try {
-      const { data } = await axios.get(`https://rickandmortyapi.com/api/episode?name=${search}`);
+      const { data } = await axios.get(`https://rickandmortyapi.com/api/episode?name=${search.toLowerCase()}`);
       dispatch({
         type: Types.EPISODES_RECEIVED,
         episodes: data.results,

@@ -2,8 +2,9 @@ import React, { Fragment } from "react";
 import {
   Col, Row, Card,
   FormGroup, Label, Input,
-  Button,
+  Button, FormText,
 } from 'reactstrap';
+import * as Yup from 'yup';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
@@ -23,12 +24,15 @@ const LocationsSearch = () => {
       search: '',
       filter: 'name',
     },
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: (values) => {
       dispatch(filterLocations(values));
-      resetForm();
     },
+    validationSchema: Yup.object().shape({
+      search: Yup.string().required("Required field"),
+      filter: Yup.string().required("Required field")
+    }),
   });
-  const { values, setFieldValue, handleSubmit } = formik;
+  const { values, setFieldValue, handleSubmit, errors } = formik;
 
   return (
     <>
@@ -52,6 +56,9 @@ const LocationsSearch = () => {
                 placeholder="Search a location"
                 value={values.search}
               />
+              {errors && errors.search && (
+                <FormText> {errors.search} </FormText>
+              )}
             </FormGroup>
           </Col>
           <Col>

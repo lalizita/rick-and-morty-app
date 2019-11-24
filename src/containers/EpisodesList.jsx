@@ -145,7 +145,7 @@ const EpisodesList = () => {
             <PaginationItem active={currentPage === number}>
               <PaginationLink onClick={() => handleClick(number)}>
                   {number}
-                </PaginationLink>
+              </PaginationLink>
             </PaginationItem>
           ))}
         </Pagination>

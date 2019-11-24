@@ -95,7 +95,7 @@ const CharactersList = () => {
       <ListHeader>
         <Row>
           <Col sm={6}>
-          Results (
+          Resultados (
             {characters.length}
           )
           </Col>
@@ -156,12 +156,12 @@ const CharactersList = () => {
       <PaginationContainer>
         <Pagination>
           {pagesNumber.map((number) => (
-            <PaginationItem active={currentPage === number}>
+              <PaginationItem active={currentPage === number}>
                 <PaginationLink onClick={() => handleClick(number)}>
                   {number}
                 </PaginationLink>
               </PaginationItem>
-          ))}
+            ))}
         </Pagination>
       </PaginationContainer>
     </>
