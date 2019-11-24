@@ -3,19 +3,16 @@ import {
   ListGroup, ListGroupItem, ListGroupItemText,
   Media, Spinner, Button,
   Row, Col, Pagination, PaginationItem,
-  PaginationLink,
+  PaginationLink, Modal, ModalHeader,
+  ModalBody, ModalFooter, Table,
 } from 'reactstrap';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { getLocations } from '../store/ducks/locations';
+import { filterCharactersB } from '../store/ducks/characters';
 
 const Label = styled.span`
   font-weight:600;
-`;
-
-const CharacterImage = styled.img`
-  width:90px;
-  margin-right:10px;
 `;
 
 const SpinnerContainer = styled.div`
@@ -42,6 +39,53 @@ const PaginationContainer = styled.div`
   text-align:center;
 `;
 
+const SeeCharacters = styled.div`
+  font-weight:700;
+
+`;
+
+const CharactersModal = ({ isOpen, onClose }) => {
+  const { characters, loading } = useSelector((state) => state.characters);
+  return (
+    <Modal isOpen={isOpen} toggle={onClose} scrollable onClose={onClose}>
+      <ModalHeader toggle={onClose}>Who lives in this location</ModalHeader>
+      {loading && (
+        <SpinnerContainer>
+          <Spinner type="grow" color="success" />
+        </SpinnerContainer>
+      )}
+      <ModalBody>
+        {characters && (
+          <Table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Specie</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Array.isArray(characters) ? characters.map((character) => (
+                <tr key={character.id}>
+                  <td>{character.name}</td>
+                  <td>{character.species}</td>
+                </tr>
+              )) : (
+                <tr key={characters.id}>
+                  <td>{characters.name}</td>
+                  <td>{characters.species}</td>
+                </tr>
+              )}
+            </tbody>
+          </Table>
+        )}
+      </ModalBody>
+      <ModalFooter>
+        <Button color="primary" onClick={onClose}>Quit</Button>
+      </ModalFooter>
+    </Modal>
+  );
+};
+
 const compareCresc = (a, b) => {
   if (a.name < b.name) return -1;
   if (a.name > b.name) return 1;
@@ -57,10 +101,10 @@ const compareDecresc = (a, b) => {
 const LocationsList = () => {
   const dispatch = useDispatch();
   const { filteredLocations, loading } = useSelector((state) => state.locations);
-  console.log("filteredLocations", filteredLocations)
   const [currentPage, setCurrentPage] = useState(1);
   const [currentItems, setCurrentItems] = useState([]);
   const [pagesNumber, setPagesNumber] = useState([]);
+  const [charactersModal, setCharactersModal] = useState(false);
   const itemsPerPage = 3;
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
@@ -89,6 +133,17 @@ const LocationsList = () => {
   const handleClick = number => {
     setCurrentPage(number);
     setCurrentItems(filteredLocations.slice(indexOfFirst, indexOfLast));
+  };
+
+  const openModal = (residents) => {
+    const charactersToSend = residents.reduce((acc, cur) => {
+      const regex = /([0-9]+)/g;
+      const number = cur.match(regex);
+      acc.push(number[0]);
+      return acc;
+    }, []);
+    dispatch(filterCharactersB(charactersToSend));
+    setCharactersModal(true);
   };
 
   return (
@@ -122,12 +177,17 @@ const LocationsList = () => {
               </Media>
               <ListGroupItemText>
                 <div>
-                  <Label>Type:</Label>
+                  <Label>Dimension:</Label>
                   { location.dimension }
                 </div>
                 <div>
                   <Label>Type:</Label>
-                  { location.planet }
+                  { location.type }
+                </div>
+                <div>
+                  <Label>Who lives here?:</Label>
+                  <SeeCharacters onClick={() => openModal(location.residents)}>See now</SeeCharacters>
+                  <CharactersModal isOpen={charactersModal} onClose={() => setCharactersModal(false)} />
                 </div>
               </ListGroupItemText>
             </Media>

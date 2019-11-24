@@ -19,7 +19,6 @@ const initialState = {
 
 export default function reducer(state = initialState, action={}) {
   const { episodes, error, filteredEpisodes } = action;
-  console.log(filteredEpisodes)
   switch (action.type) {
     case Types.EPISODES_REQUESTED:
       return {

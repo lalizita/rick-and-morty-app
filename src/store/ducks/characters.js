@@ -71,3 +71,21 @@ export const filterCharacters = (values) => (dispatch) => dispatch({
   type: Types.FILTERED_CHARACTERS,
   filteredCharacters: values,
 });
+
+export const filterCharactersB = characters => {
+  return async (dispatch) => {
+    dispatch({ type: Types.CHARACTERS_REQUESTED });
+    try {
+      const { data } = await axios.get(`https://rickandmortyapi.com/api/character/${characters}`);
+      dispatch({
+        type: Types.CHARACTERS_RECEIVED,
+        characters: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: Types.CHARACTERS_FAILED,
+        error,
+      });
+    }
+  };
+};
