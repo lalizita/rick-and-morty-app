@@ -17,7 +17,7 @@ const store = createStore(configureStore, applyMiddleware(thunk))
 
 function App(props) {
   return (
-    <Router>
+    <Router basename={window.location.pathname}>
       <Provider store={store}>
           <Switch>
             <Route exact path="/">
@@ -34,7 +34,7 @@ function App(props) {
             </Route>
           </Switch>
       </Provider>
-      </Router>
+    </Router>
   );
 }
 
